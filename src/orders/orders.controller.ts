@@ -6,8 +6,9 @@ import {
   Param,
   Inject,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
-import { CreateOrderDto } from './dto';
+import { CreateOrderDto, PaginationOrderDto } from './dto';
 import { ORDER_SERVICE } from 'src/config';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
@@ -24,8 +25,8 @@ export class OrdersController {
   }
 
   @Get()
-  findAll() {
-    return this.ordersClient.send('findAllOrders', {});
+  findAll(@Query() paginationOrderDto: PaginationOrderDto) {
+    return this.ordersClient.send('findAllOrders', paginationOrderDto);
   }
 
   @Get(':id')
